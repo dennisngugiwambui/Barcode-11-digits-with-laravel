@@ -43,7 +43,7 @@ class BarcodeController extends Controller
 
     public function Barcode(Request $request)
     {
-        //$barcode = Barcode::all();
+        $barcode = Product::all();
 
         return view('barcodes');
     }
@@ -83,5 +83,7 @@ class BarcodeController extends Controller
             return response()->json(['error' => 'Product not found'], 404);
         }
     }
+
+
 
 }

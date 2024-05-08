@@ -5,7 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generate Barcode</title>
     <!-- Bootstrap CSS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 5%;
+        }
+        select.select2 {
+            width: 500px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -14,10 +30,22 @@
             @csrf
             <div class="form-group">
                 <label for="productName">Product Name:</label>
-                <input type="text" id="productName" name="productName" class="form-control" required>
+                <select class="select2">
+                    @foreach($barcodes as $barcode)
+                        <option value="{{$barcode->productCode}}">{{$barcode->productName}}</option>
+                    @endforeach
+
+                </select>
             </div>
             <button type="submit" class="btn btn-primary">Generate Barcode</button>
         </form>
     </div>
 </body>
+
+<script>
+    $(document).ready(function () {
+        $(".select2").select2();
+    });
+
+</script>
 </html>
