@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('barcodes', function (Blueprint $table) {
             $table->id();
+            $table->string('countryCode');
+            $table->string('productCode');
+            $table->string('companyCode');
+            $table->string('lastDigit');
+            $table->string('barcodeId');
             $table->timestamps();
         });
     }

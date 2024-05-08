@@ -74,7 +74,7 @@ class BarcodeController extends Controller
             $barcode->companyCode = $product->companyCode;
             $barcode->lastDigit = $lastDigit;
             $barcode->barcodeId = $barcodeId;
-            $barcode->save(); // Store in database
+            //$barcode->save(); // Store in database
 
             // Or return the generated barcodeId
             return response()->json(['barcodeId' => $barcodeId]);

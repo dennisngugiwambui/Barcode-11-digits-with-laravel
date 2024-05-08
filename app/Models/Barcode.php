@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Barcode extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'countryCode',
+        'productCode',
+        'companyCode',
+        'lastDigit',
+        'barcodeId',
+    ];
 }
