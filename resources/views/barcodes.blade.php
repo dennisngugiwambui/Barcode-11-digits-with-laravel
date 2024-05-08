@@ -24,28 +24,30 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2 class="mt-4">Generate Barcode</h2>
-        <form action="{{route('GenerateBarcode')}}" method="post">
-            @csrf
-            <div class="form-group">
-                <label for="productName">Product Name:</label>
-                <select class="select2">
-                    @foreach($barcodes as $barcode)
-                        <option value="{{$barcode->productCode}}">{{$barcode->productName}}</option>
-                    @endforeach
+<div class="container">
+    <h2 class="mt-4">Generate Barcode</h2>
+    <form action="{{ route('GenerateBarcode') }}" method="post">
+        @csrf
+        <div class="form-group">
+            <label for="productName">Product Name:</label>
+            <select id="productName" name="id" class="select2 form-control">
+                @foreach($barcodes as $barcode)
+                    <option value="{{ $barcode->id }}">{{ $barcode->productName }}</option>
+                @endforeach
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Generate Barcode</button>
+    </form>
+</div>
 
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Generate Barcode</button>
-        </form>
-    </div>
-</body>
-
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Select2 JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script>
     $(document).ready(function () {
-        $(".select2").select2();
+        $('.select2').select2();
     });
-
 </script>
+</body>
 </html>
