@@ -26,7 +26,7 @@
 <body>
     <div class="container">
         <h2 class="mt-4">Generate Barcode</h2>
-        <form method="post">
+        <form action="{{route('GenerateBarcode')}}" method="post">
             @csrf
             <div class="form-group">
                 <label for="productName">Product Name:</label>

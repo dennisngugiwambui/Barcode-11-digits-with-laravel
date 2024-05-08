@@ -17,3 +17,5 @@ Route::any('/newProduct', [App\Http\Controllers\BarcodeController::class, 'NewPr
 
 Route::get('/barcode', [App\Http\Controllers\BarcodeController::class, 'Barcode'])->name('Barcode');
 
+Route::post('/GenerateBarcode', [App\Http\Controllers\BarcodeController::class, 'GenerateBarcode'])->name('GenerateBarcode');
+
