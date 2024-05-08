@@ -93,6 +93,17 @@ class BarcodeController extends Controller
         }
     }
 
+    public function generateBarcode(Request $request, $barcodeId)
+    {
+        // Generate barcode image
+        $barcode = new DNS1D();
+        $barcode->setStorPath(public_path('barcodes')); // Set storage path
+        $barcodeImage = $barcode->getBarcodePNG($barcodeId, 'C128');
+
+        // Return view with barcode image
+        return view('generatedBarcode', ['barcodeImage' => $barcodeImage]);
+    }
+
 
 
 

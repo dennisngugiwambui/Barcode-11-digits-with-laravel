@@ -63,12 +63,17 @@
                 <td>{{ $bar->lastDigit }}</td>
                 <td>{{ $bar->barcodeId }}</td>
                 <td>
-                    <button class="btn btn-secondary"><i class="fa fa-eye"></i>Generate</button>
+                    <form action="{{ route('generate.barcode', ['barcodeId' => $barcode->barcodeId]) }}" method="post">
+                        @csrf
+                        <button type="submit" class="btn btn-secondary"><i class="fa fa-eye"></i> Generate</button>
+                    </form>
                 </td>
             </tr>
         @endforeach
         </tbody>
     </table>
+
+    <a href="/" >Return home</a>
 </div>
 
 <!-- jQuery -->
