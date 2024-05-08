@@ -38,6 +38,32 @@
         </div>
         <button type="submit" class="btn btn-primary">Generate Barcode</button>
     </form>
+
+    <h2 class="mt-5">Barcode Details</h2>
+    <table class="table mt-3">
+        <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>Country Code</th>
+            <th>Company Code</th>
+            <th>Product Code</th>
+            <th>Last Digit</th>
+            <th>Barcode ID</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach($barcodes as $barcode)
+            <tr>
+                <td>{{ $barcode->productName }}</td>
+                <td>{{ $barcode->countryCode }}</td>
+                <td>{{ $barcode->companyCode }}</td>
+                <td>{{ $barcode->productCode }}</td>
+                <td>{{ $barcode->lastDigit }}</td>
+                <td>{{ $barcode->barcodeId }}</td>
+            </tr>
+        @endforeach
+        </tbody>
+    </table>
 </div>
 
 <!-- jQuery -->

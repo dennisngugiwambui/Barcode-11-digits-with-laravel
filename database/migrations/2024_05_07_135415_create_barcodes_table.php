@@ -15,9 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('countryCode');
             $table->string('productCode');
+
             $table->string('companyCode');
             $table->string('lastDigit');
             $table->string('barcodeId');
+            $table->string('status')->default('created');
             $table->timestamps();
         });
     }
