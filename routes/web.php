@@ -21,3 +21,5 @@ Route::post('/GenerateBarcode', [App\Http\Controllers\BarcodeController::class, 
 
 Route::post('/generate-barcode/{barcodeId}', [App\Http\Controllers\BarcodeController::class, 'generateBarcodeImage'])->name('generate.barcode');
 
+Route::get('/ShowgeneratedBarcodes', [App\Http\Controllers\BarcodeController::class, 'ShowgeneratedBarcodes'])->name('generatedBarcodes');
+

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\GeneratedBarcode;
 use Illuminate\Http\Request;
 use App\Models\CountryCode;
 use App\Models\Product;
@@ -95,15 +96,51 @@ class BarcodeController extends Controller
     }
 
     // Controller
+//    public function generateBarcodeImage(Request $request, $barcodeId)
+//    {
+//        // Generate barcode image
+//        $barcode = new DNS1D();
+//        $barcode->setStorPath(public_path('barcodes')); // Set storage path
+//        $barcodeImage = $barcode->getBarcodePNG($barcodeId, 'C128');
+//
+//        // Return view with barcode image
+//        return view('generatedBarcodes', ['barcodeImage' => $barcodeImage, 'barcodeId' => $barcodeId]);
+//    }
+
     public function generateBarcodeImage(Request $request, $barcodeId)
     {
+        // Get the barcode details
+        $barcodeDetails = Barcode::where('barcodeId', $barcodeId)->firstOrFail();
+
         // Generate barcode image
         $barcode = new DNS1D();
         $barcode->setStorPath(public_path('barcodes')); // Set storage path
         $barcodeImage = $barcode->getBarcodePNG($barcodeId, 'C128');
 
+
+
+        // Save the barcode image to storage
+        $imageName = $barcodeId . '.png'; // Use barcode ID as image name
+        file_put_contents(public_path('barcodes/' . $imageName), $barcodeImage);
+
+        // Save the barcode to the generatedBarcodes table
+        $generatedBarcode = new GeneratedBarcode();
+        $generatedBarcode->barcodeId = $barcodeId;
+        $generatedBarcode->image = $imageName;
+        $generatedBarcode->productCode = $barcodeDetails->productCode;
+        $generatedBarcode->countryCode = $barcodeDetails->countryCode;
+        $generatedBarcode->companyCode = $barcodeDetails->companyCode;
+        $generatedBarcode->save();
+
         // Return view with barcode image
-        return view('generatedBarcodes', ['barcodeImage' => $barcodeImage, 'barcodeId' => $barcodeId]);
+        return redirect()->back();
+    }
+
+    public function ShowgeneratedBarcodes()
+    {
+        $Showgenerated = GeneratedBarcode::all();
+
+        return view('generatedBarcodes', compact('Showgenerated'));
     }
 
 

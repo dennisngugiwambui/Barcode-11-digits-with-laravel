@@ -80,6 +80,8 @@
     </table>
 
     <a href="/" >Return home</a>
+
+    <a href="/ShowgeneratedBarcodes" >See Generated Barcodes</a>
 </div>
 
 <!-- jQuery -->

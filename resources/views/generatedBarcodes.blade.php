@@ -13,7 +13,37 @@
 <div class="container">
     <h2 class="mt-4">Generated Barcode</h2>
 
-    <div class="mb-3">{!! DNS1D::getBarcodeHTML($barcodeId, 'C128') !!}</div>
+    <table class="mt-3 table table-dark table-striped-columns">
+        <thead>
+        <tr>
+
+            <th>Country Code</th>
+            <th>Company Code</th>
+            <th>Product Code</th>
+            <th>Barcode ID</th>
+            <th>Barcode Image</th>
+            <th>Generate</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach($Showgenerated as $bar)
+            <tr>
+
+                <td>{{ $bar->countryCode }}</td>
+                <td>{{ $bar->companyCode }}</td>
+                <td>{{ $bar->productCode }}</td>
+                <td>{{ $bar->barcodeId }}</td>
+                <td>
+                    <img src="{{ asset('barcodes/' . $bar->image) }}" alt="Barcode Image" width="150">
+                </td>
+                <td>
+
+                        <button type="submit" class="btn btn-secondary"><i class="fa fa-eye"></i> Print</button>
+                </td>
+            </tr>
+        @endforeach
+        </tbody>
+    </table>
 </div>
 </body>
 </html>
