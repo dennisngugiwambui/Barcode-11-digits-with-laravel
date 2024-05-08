@@ -44,8 +44,9 @@ class BarcodeController extends Controller
     public function Barcode(Request $request)
     {
         $barcodes = Product::all();
+        $bar=Barcode::all();
 
-        return view('barcodes', compact('barcodes'));
+        return view('barcodes', compact('barcodes', 'bar'));
     }
 
     public function GenerateBarcode(Request $request)

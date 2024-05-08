@@ -26,21 +26,9 @@
 </head>
 <body>
 <div class="container">
-    <h2 class="mt-4">Generate Barcode</h2>
-    <form action="{{ route('GenerateBarcode') }}" method="post">
-        @csrf
-        <div class="form-group">
-            <label for="productName">Product Name:</label>
-            <select id="productName" name="id" class="select2 form-control">
-                @foreach($barcodes as $barcode)
-                    <option value="{{ $barcode->id }}">{{ $barcode->productName }}</option>
-                @endforeach
-            </select>
-        </div>
-        <button type="submit" class="btn btn-primary">Generate Barcode</button>
-    </form>
 
-    <h2 class="mt-5">Barcode Details</h2>
+
+    <h2 class="mt-5">Generated Barcodes Details</h2>
     <table class="mt-3 table table-dark table-striped-columns">
         <thead>
         <tr>
