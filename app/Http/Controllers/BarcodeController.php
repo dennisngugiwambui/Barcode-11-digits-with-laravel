@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\CountryCode;
 use App\Models\Product;
 use App\Models\Barcode;
+use Milon\Barcode\DNS1D;
 
 class BarcodeController extends Controller
 {
@@ -93,7 +94,8 @@ class BarcodeController extends Controller
         }
     }
 
-    public function generateBarcode(Request $request, $barcodeId)
+    // Controller
+    public function generateBarcodeImage(Request $request, $barcodeId)
     {
         // Generate barcode image
         $barcode = new DNS1D();
@@ -101,7 +103,7 @@ class BarcodeController extends Controller
         $barcodeImage = $barcode->getBarcodePNG($barcodeId, 'C128');
 
         // Return view with barcode image
-        return view('generatedBarcode', ['barcodeImage' => $barcodeImage]);
+        return view('generatedBarcodes', ['barcodeImage' => $barcodeImage, 'barcodeId' => $barcodeId]);
     }
 
 

@@ -10,6 +10,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
 
     <style>
 
@@ -50,6 +51,7 @@
             <th>Product Code</th>
             <th>Last Digit</th>
             <th>Barcode ID</th>
+            <th>Barcode Image</th>
             <th>Generate</th>
         </tr>
         </thead>
@@ -62,8 +64,12 @@
                 <td>{{ $bar->productCode }}</td>
                 <td>{{ $bar->lastDigit }}</td>
                 <td>{{ $bar->barcodeId }}</td>
+                <td>@if (isset($barcodeImage) && $bar->barcodeId == $barcodeId)
+                        <img src="data:image/png;base64,{{ base64_encode($barcodeImage) }}" alt="Barcode Image" style="max-width: 200px;">
+                    @endif
+                </td>
                 <td>
-                    <form action="{{ route('generate.barcode', ['barcodeId' => $barcode->barcodeId]) }}" method="post">
+                    <form action="{{ route('generate.barcode', ['barcodeId' => $bar->barcodeId]) }}" method="post">
                         @csrf
                         <button type="submit" class="btn btn-secondary"><i class="fa fa-eye"></i> Generate</button>
                     </form>
