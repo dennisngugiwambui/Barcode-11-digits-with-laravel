@@ -34,7 +34,8 @@
                 <td>{{ $bar->productCode }}</td>
                 <td>{{ $bar->barcodeId }}</td>
                 <td>
-                    <img src="{{ asset('barcodes/' . $bar->image) }}" alt="Barcode Image" width="150">
+                    {!! DNS1D::getBarcodeHTML($bar->barcodeId, 'PHARMA') !!}
+
                 </td>
                 <td>
 
