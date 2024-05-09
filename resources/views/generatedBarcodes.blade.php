@@ -13,7 +13,7 @@
 <div class="container">
     <h2 class="mt-4">Generated Barcode</h2>
 
-    <table class="mt-3 table table-dark table-striped-columns">
+    <table class="mt-3 table table-striped-columns">
         <thead>
         <tr>
 
@@ -33,18 +33,33 @@
                 <td>{{ $bar->companyCode }}</td>
                 <td>{{ $bar->productCode }}</td>
                 <td>{{ $bar->barcodeId }}</td>
-                <td>
+                <td style="position: relative; text-align: center;">
                     {!! DNS1D::getBarcodeHTML($bar->barcodeId, 'PHARMA') !!}
-
+                    <div style="position: absolute; bottom: 0; left: 0; right: 0; text-align: center; font-size: 12px;">
+                        {{$bar->barcodeId}}
+                    </div>
                 </td>
+
                 <td>
 
-                        <button type="submit" class="btn btn-secondary"><i class="fa fa-eye"></i> Print</button>
+                        <button type="submit" onclick="printBarcode('barcode{{$loop->index}}')" class="btn btn-secondary"><i class="fa fa-eye"></i> Print</button>
                 </td>
             </tr>
         @endforeach
         </tbody>
     </table>
 </div>
+
+<script>
+    function printBarcode(barcodeId) {
+        var printWindow = window.open('', '_blank');
+        printWindow.document.open();
+        printWindow.document.write('<html><head><title>Barcode Print</title></head><body>');
+        printWindow.document.write(document.getElementById(barcodeId).outerHTML);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.print();
+    }
+</script>
 </body>
 </html>
