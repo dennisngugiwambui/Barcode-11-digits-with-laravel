@@ -5,15 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generate Barcode</title>
     <!-- Bootstrap CSS -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
-
     <style>
-
         .center {
             display: flex;
             justify-content: center;
@@ -45,7 +39,6 @@
     <table class="mt-3 table table-dark table-striped-columns">
         <thead>
         <tr>
-
             <th>Country Code</th>
             <th>Company Code</th>
             <th>Product Code</th>
@@ -53,12 +46,12 @@
             <th>Barcode ID</th>
             <th>Barcode Image</th>
             <th>Generate</th>
+            <th>Print</th> <!-- Added column for printing -->
         </tr>
         </thead>
         <tbody>
         @foreach($bar as $bar)
             <tr>
-
                 <td>{{ $bar->countryCode }}</td>
                 <td>{{ $bar->companyCode }}</td>
                 <td>{{ $bar->productCode }}</td>
@@ -74,14 +67,17 @@
                         <button type="submit" class="btn btn-secondary"><i class="fa fa-eye"></i> Generate</button>
                     </form>
                 </td>
+                <td>
+                    <button onclick="printBarcode('{{ $bar->barcodeId }}')" class="btn btn-secondary"><i class="fa fa-print"></i> Print</button>
+                </td> <!-- Added button for printing -->
             </tr>
         @endforeach
         </tbody>
     </table>
 
-    <a href="/" >Return home</a>
+    <a href="/">Return home</a>
 
-    <a href="/ShowgeneratedBarcodes" >See Generated Barcodes</a>
+    <a href="/ShowgeneratedBarcodes">See Generated Barcodes</a>
 </div>
 
 <!-- jQuery -->
@@ -92,6 +88,19 @@
     $(document).ready(function () {
         $('.select2').select2();
     });
+
+    function printBarcode(barcodeId) {
+        var barcodeImage = document.querySelector('img[src^="data:image/png;base64"]');
+        if (barcodeImage) {
+            var printWindow = window.open('', '_blank');
+            printWindow.document.open();
+            printWindow.document.write('<html><head><title>Barcode Print</title></head><body>');
+            printWindow.document.write('<img src="' + barcodeImage.src + '" style="max-width: 100%;">');
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
+        }
+    }
 </script>
 </body>
 </html>

@@ -8,6 +8,7 @@ use App\Models\CountryCode;
 use App\Models\Product;
 use App\Models\Barcode;
 use Milon\Barcode\DNS1D;
+use Picqer\Barcode\BarcodeGeneratorPNG;
 
 class BarcodeController extends Controller
 {
@@ -112,10 +113,11 @@ class BarcodeController extends Controller
         // Get the barcode details
         $barcodeDetails = Barcode::where('barcodeId', $barcodeId)->firstOrFail();
 
-        // Generate barcode image in PNG format
-        $barcode = new DNS1D();
-        $barcode->setStorPath(public_path('barcodes')); // Set storage path
-        $barcodeImage = $barcode->getBarcodePNG($barcodeId, 'C128');
+        // Create an instance of BarcodeGeneratorPNG
+        $generatorPNG = new BarcodeGeneratorPNG();
+
+        // Generate the barcode image in PNG format
+        $barcodeImage = $generatorPNG->getBarcode($barcodeId, $generatorPNG::TYPE_CODE_128);
 
         // Save the barcode image to the disk
         $filename = time() . '_' . $barcodeId . '.png';
