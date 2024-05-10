@@ -8,7 +8,7 @@ use App\Models\CountryCode;
 use App\Models\Product;
 use App\Models\Barcode;
 use Milon\Barcode\DNS1D;
-use Picqer\Barcode\BarcodeGeneratorSVG;
+use Picqer\Barcode\BarcodeGeneratorPNG;
 
 class BarcodeController extends Controller
 {
@@ -110,11 +110,20 @@ class BarcodeController extends Controller
 
     public function generateBarcodeImage(Request $request, $barcodeId)
     {
+        // Check if the barcode already exists
+        $existingBarcode = GeneratedBarcode::where('barcodeId', $barcodeId)->first();
+
+        // If the barcode already exists, return without saving
+        if ($existingBarcode) {
+            // Optionally, you can return a response indicating that the barcode already exists
+            return redirect()->back()->with('error', 'Barcode already generated for this product code.');
+        }
+
         // Get the barcode details
         $barcodeDetails = Barcode::where('barcodeId', $barcodeId)->firstOrFail();
 
-        // Create an instance of BarcodeGeneratorSVG
-        $generatorPNG = new BarcodeGeneratorSVG();
+        // Create an instance of BarcodeGeneratorPNG
+        $generatorPNG = new BarcodeGeneratorPNG();
 
         // Generate the barcode image in PNG format
         $barcodeImage = $generatorPNG->getBarcode($barcodeId, $generatorPNG::TYPE_CODE_128);
@@ -134,8 +143,9 @@ class BarcodeController extends Controller
         $generatedBarcode->save();
 
         // Return view with barcode image
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Barcode generated successfully.');
     }
+
 
     public function ShowgeneratedBarcodes()
     {
