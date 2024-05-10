@@ -64,7 +64,7 @@
                 <td>
                     <form action="{{ route('generate.barcode', ['barcodeId' => $bar->barcodeId]) }}" method="post">
                         @csrf
-                        <button type="submit" class="btn btn-secondary"><i class="fa fa-eye"></i> Generate</button>
+                        <button type="submit" class=" btn btn-secondary"><i class="fa fa-eye"></i> Generate</button>
                     </form>
                 </td>
                 <td>
@@ -87,7 +87,7 @@
 <script>
     $(document).ready(function () {
         $('.select2').select2();
-    });
+
 
     function printBarcode(barcodeId) {
         var barcodeImage = document.querySelector('img[src^="data:image/png;base64"]');
