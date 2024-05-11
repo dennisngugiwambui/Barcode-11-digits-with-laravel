@@ -25,9 +25,8 @@
         </tr>
         </thead>
         <tbody>
-        <?php
-        foreach ($Showgenerated as $bar) {
-            ?>
+
+       @foreach ($Showgenerated as $bar)
         <tr>
             <td><?= $bar['countryCode'] ?></td>
             <td><?= $bar['companyCode'] ?></td>
@@ -46,13 +45,15 @@
                 <button type="button" class="btn btn-secondary" onclick="printBarcode('barcode_<?= $bar['barcodeId'] ?>')">
                     <i class="fa fa-eye"></i> Print
                 </button>
+
+                <a href="{{route('generateReceiptsPdf', $bar->barcodeId)}}" type="button" class="btn btn-danger" >
+                    <i class="fa fa-eye"></i> Download Barcode
+                </a>
             </td>
 
 
         </tr>
-            <?php
-        }
-        ?>
+        @endforeach
         </tbody>
     </table>
 </div>

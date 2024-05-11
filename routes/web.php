@@ -23,3 +23,10 @@ Route::post('/generate-barcode/{barcodeId}', [App\Http\Controllers\BarcodeContro
 
 Route::get('/ShowgeneratedBarcodes', [App\Http\Controllers\BarcodeController::class, 'ShowgeneratedBarcodes'])->name('generatedBarcodes');
 
+
+Route::get('/generateReceiptsPdf/{barcodeId}', [App\Http\Controllers\BarcodeController::class, 'generateReceiptsPdf'])->name('generateReceiptsPdf');
+
+
+
+
+
