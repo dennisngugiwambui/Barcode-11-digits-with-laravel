@@ -16,4 +16,9 @@ class Barcode extends Model
         'lastDigit',
         'barcodeId',
     ];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'productCode', 'productCode');
+    }
 }
