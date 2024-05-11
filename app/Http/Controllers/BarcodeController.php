@@ -156,15 +156,16 @@ class BarcodeController extends Controller
 
     public function generateReceiptsPdf(Request $request)
     {
-        $orders = Barcode::find($request->id);
-        //$user = Auth::user();
+        // Retrieve the barcode ID from the request
+        $barcodeId = $request->barcodeId;
 
-        // Load the view and pass data to it
-        $pdf = \PDF::loadView('admin.receipts', compact('orders'));
+        // Load the view and pass the barcode ID to it
+        $pdf = \PDF::loadView('receipt', compact('barcodeId'));
 
         // Stream the PDF
-        return $pdf->stream('receipts.pdf');
+        return $pdf->stream('receipt.pdf');
     }
+
 
 
 
