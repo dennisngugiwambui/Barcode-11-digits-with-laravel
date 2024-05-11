@@ -33,18 +33,25 @@
             <td><?= $bar['productCode'] ?></td>
             <td><?= $bar['barcodeId'] ?></td>
             <td style="position: relative; text-align: center;">
-                <div id="barcode_<?= $bar['barcodeId'] ?>">
+{{--                <div id="barcode_<?= $bar['barcodeId'] ?>">--}}
 
-                    {!! DNS1D::getBarcodeHTML($bar->barcodeId, 'PHARMA') !!}
+{{--                    {!! DNS1D::getBarcodeHTML($bar->barcodeId, 'PHARMA') !!}--}}
+{{--                    <div style="position: absolute; bottom: 0; left: 0; right: 0; text-align: center; font-size: 12px;">--}}
+{{--                        {{$bar->barcodeId}}--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </td>--}}
+                <div class="barcode-container">
+                    <!-- Display the barcode image -->
+                    <img src="{{ asset('barcodes/' . $bar->image) }}" class="barcode-image" alt="Barcode Image">
                     <div style="position: absolute; bottom: 0; left: 0; right: 0; text-align: center; font-size: 12px;">
-                        {{$bar->barcodeId}}
+                         {{ $bar->barcodeId }}
                     </div>
                 </div>
-            </td>
             <td>
-                <button type="button" class="btn btn-secondary" onclick="printBarcode('barcode_<?= $bar['barcodeId'] ?>')">
-                    <i class="fa fa-eye"></i> Print
-                </button>
+{{--                <button type="button" class="btn btn-secondary" onclick="printBarcode('barcode_<?= $bar['barcodeId'] ?>')">--}}
+{{--                    <i class="fa fa-eye"></i> Print--}}
+{{--                </button>--}}
 
                 <a href="{{route('generateReceiptsPdf', $bar->barcodeId)}}" type="button" class="btn btn-danger" >
                     <i class="fa fa-eye"></i> Download Barcode

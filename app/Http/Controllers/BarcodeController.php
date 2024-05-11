@@ -8,7 +8,10 @@ use App\Models\CountryCode;
 use App\Models\Product;
 use App\Models\Barcode;
 use Milon\Barcode\DNS1D;
+use Illuminate\Support\Facades\Log;
 use Picqer\Barcode\BarcodeGeneratorPNG;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class BarcodeController extends Controller
 {
@@ -151,23 +154,33 @@ class BarcodeController extends Controller
     {
         $Showgenerated = GeneratedBarcode::all();
 
+        //$barcodeImagePath = $this->generateBarcodeImage($request, $barcodeId);
+
         return view('generatedBarcodes', compact('Showgenerated'));
     }
 
-    public function generateReceiptsPdf(Request $request)
+
+
+    public function generateReceiptsPdf(Request $request, $barcodeId)
     {
-        $barcodeId = Barcode::find($request->barcodeId);
+        $barcode = GeneratedBarcode::where('barcodeId', $barcodeId)->first();
 
-        // Retrieve the barcodeId attribute from the Barcode model
-        //$barcodeId = $orders->barcodeId;
-        //$user = Auth::user();
+       // return response()->json();
 
-        // Load the view and pass data to it
-        $pdf = \PDF::loadView('receipt', compact('barcodeId'));
-
+        // Load the PDF view and pass the barcode data to it
+        $pdf = \PDF::loadView('receipt', compact('barcode'));
         // Stream the PDF
         return $pdf->stream('receipt.pdf');
     }
+
+
+
+
+
+
+
+
+
 
 
 
