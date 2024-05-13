@@ -131,10 +131,41 @@ class BarcodeController extends Controller
         // Generate the barcode image in PNG format
         $barcodeImage = $generatorPNG->getBarcode($barcodeId, $generatorPNG::TYPE_CODE_128);
 
-        // Save the barcode image to the disk
+        // Create a new image resource
+        $imageResource = imagecreatefrompng($barcodeImage);
+
+        // Get the image dimensions
+        $imageWidth = imagesx($imageResource);
+        $imageHeight = imagesy($imageResource);
+
+        // Calculate the height for the text area
+        $textAreaHeight = 30; // Adjust the height as needed
+
+        // Create a new image resource for the combined image
+        $combinedImageResource = imagecreatetruecolor($imageWidth, $imageHeight + $textAreaHeight);
+
+        // Copy the barcode image onto the combined image
+        imagecopy($combinedImageResource, $imageResource, 0, 0, 0, 0, $imageWidth, $imageHeight);
+
+        // Allocate colors for the text area
+        $textAreaColor = imagecolorallocate($combinedImageResource, 255, 255, 255); // White background
+        $textColor = imagecolorallocate($combinedImageResource, 0, 0, 0); // Black text
+
+        // Draw the text area
+        imagefilledrectangle($combinedImageResource, 0, $imageHeight, $imageWidth, $imageHeight + $textAreaHeight, $textAreaColor);
+
+        // Add the barcode number text to the text area
+        $textSize = 12; // Adjust the size as needed
+        $textX = ($imageWidth - (strlen($barcodeId) * imagefontwidth(5) * $textSize / 12)) / 2;
+        $textY = $imageHeight + ($textAreaHeight - imagefontheight(5) * $textSize / 12) / 2 + imagefontheight(5) * $textSize / 12;
+        imagestring($combinedImageResource, 5 * $textSize / 12, $textX, $textY, $barcodeId, $textColor);
+
+        // Save the combined barcode image to the disk
         $filename = time() . '_' . $barcodeId . '.png';
         $imagePath = public_path('barcodes/' . $filename);
-        file_put_contents($imagePath, $barcodeImage);
+        imagepng($combinedImageResource, $imagePath);
+        imagedestroy($imageResource);
+        imagedestroy($combinedImageResource);
 
         // Save the barcode to the generatedBarcodes table
         $generatedBarcode = new GeneratedBarcode();
@@ -148,7 +179,6 @@ class BarcodeController extends Controller
         // Return view with barcode image
         return redirect()->back()->with('success', 'Barcode generated successfully.');
     }
-
 
     public function ShowgeneratedBarcodes()
     {
