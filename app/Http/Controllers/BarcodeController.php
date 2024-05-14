@@ -12,9 +12,10 @@ use Illuminate\Support\Facades\Log;
 use Picqer\Barcode\BarcodeGeneratorPNG;
 use Dompdf\Dompdf;
 use Dompdf\Options;
-use Zend\Barcode\Object\Code128;
-use Zend\Barcode\Renderer\ImageRenderer;
-use Zend\Barcode\Renderer\Image;
+use BaconQrCode\Renderer\ImageRenderer;
+use BaconQrCode\Renderer\RendererStyle\RendererStyle;
+use BaconQrCode\Writer;
+use BaconQrCode\Renderer\Image\ImagickImageBackEnd;
 
 class BarcodeController extends Controller
 {
@@ -114,10 +115,6 @@ class BarcodeController extends Controller
 //        return view('generatedBarcodes', ['barcodeImage' => $barcodeImage, 'barcodeId' => $barcodeId]);
 //    }
 
-    use Zend\Barcode\Object\Code128;
-    use Zend\Barcode\Renderer\ImageRenderer;
-    use Zend\Barcode\Renderer\Image;
-
     public function generateBarcodeImage(Request $request, $barcodeId)
     {
         // Check if the barcode already exists
@@ -132,58 +129,16 @@ class BarcodeController extends Controller
         // Get the barcode details
         $barcodeDetails = Barcode::where('barcodeId', $barcodeId)->firstOrFail();
 
-        // Create a new Code128 barcode object
-        $barcodeObject = new Code128(['text' => $barcodeId]);
+        // Create an instance of BarcodeGeneratorPNG
+        $generatorPNG = new BarcodeGeneratorPNG();
 
-        // Configure barcode rendering options
-        $rendererOptions = [
-            'renderAsImage' => true,
-            'imageFormat' => 'png',
-            'verticalBars' => true,  // Set to true for tall barcode
-            'imageHeight' => 150,  // Adjust the height as needed
-        ];
+        // Generate the barcode image in PNG format
+        $barcodeImage = $generatorPNG->getBarcode($barcodeId, $generatorPNG::TYPE_EAN_8);
 
-        // Create an ImageRenderer object
-        $renderer = new ImageRenderer($rendererOptions);
-
-        // Generate the barcode image
-        $barcodeImage = $renderer->render($barcodeObject);
-
-        // Create a new image resource from the barcode image
-        $imageResource = imagecreatefromstring($barcodeImage);
-
-        // Get the image dimensions
-        $imageWidth = imagesx($imageResource);
-        $imageHeight = imagesy($imageResource);
-
-        // Calculate the height for the text area
-        $textAreaHeight = 30; // Adjust the height as needed
-
-        // Create a new image resource for the combined image
-        $combinedImageResource = imagecreatetruecolor($imageWidth, $imageHeight + $textAreaHeight);
-
-        // Copy the barcode image onto the combined image
-        imagecopy($combinedImageResource, $imageResource, 0, 0, 0, 0, $imageWidth, $imageHeight);
-
-        // Allocate colors for the text area
-        $textAreaColor = imagecolorallocate($combinedImageResource, 255, 255, 255); // White background
-        $textColor = imagecolorallocate($combinedImageResource, 0, 0, 0); // Black text
-
-        // Draw the text area
-        imagefilledrectangle($combinedImageResource, 0, $imageHeight, $imageWidth, $imageHeight + $textAreaHeight, $textAreaColor);
-
-        // Add the barcode number text to the text area
-        $textSize = 12; // Adjust the size as needed
-        $textX = ($imageWidth - (strlen($barcodeId) * imagefontwidth(5) * $textSize / 12)) / 2;
-        $textY = $imageHeight + ($textAreaHeight - imagefontheight(5) * $textSize / 12) / 2 + imagefontheight(5) * $textSize / 12;
-        imagestring($combinedImageResource, 5 * $textSize / 12, $textX, $textY, $barcodeId, $textColor);
-
-        // Save the combined barcode image to the disk
+        // Save the barcode image to the disk
         $filename = time() . '_' . $barcodeId . '.png';
         $imagePath = public_path('barcodes/' . $filename);
-        imagepng($combinedImageResource, $imagePath);
-        imagedestroy($imageResource);
-        imagedestroy($combinedImageResource);
+        file_put_contents($imagePath, $barcodeImage);
 
         // Save the barcode to the generatedBarcodes table
         $generatedBarcode = new GeneratedBarcode();
